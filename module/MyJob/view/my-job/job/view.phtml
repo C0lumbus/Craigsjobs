@@ -1,0 +1,11 @@
+<ul class="list-group">
+	<li class="list-group-item"><?php echo $this->escapeHtml($job->title);?></li>
+	<li class="list-group-item"><?php echo $this->escapeHtml($job->city);?></li>
+
+	<li class="list-group-item"><?php echo $job->text;?></li>
+	<li class="list-group-item">
+        <a href="<?php echo $this->escapeHtml($job->url); ?>">Open source of vacancy</a>
+    </li>
+	<li class="list-group-item"><span class="glyphicon glyphicon-time"></span> Grab date: <?php echo $this->escapeHtml($job->created);?></li>
+	<li class="list-group-item"><span class="glyphicon glyphicon-time"></span> Original post date: <?php echo $this->escapeHtml($job->created_original);?></li>
+</ul>
