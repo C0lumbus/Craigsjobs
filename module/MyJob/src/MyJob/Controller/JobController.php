@@ -8,6 +8,9 @@ class JobController extends AbstractActionController {
 
 	protected $jobTable;
 
+	/**
+	 * @return \MyJob\Model\JobTable
+	 */
 	public function getJobTable() {
 		if(!$this->jobTable) {
 			$sm = $this->getServiceLocator();
@@ -16,16 +19,33 @@ class JobController extends AbstractActionController {
 
 		return $this->jobTable;
 	}
+
 	public function indexAction() {
 		$this->getServiceLocator()->get('ViewHelperManager')->get('HeadTitle')->set('Jobs list');
 
+		// grab the paginator from the AlbumTable
+		$paginator = $this->getJobTable()->fetchAll(true);
+		// set the current page to what has been passed in query string, or to 1 if none set
+		$paginator->setCurrentPageNumber((int)$this->params()->fromQuery('page', 1));
+		// set the number of items per page to 10
+		$paginator->setItemCountPerPage(10);
+
+		/*
 		$view = new ViewModel(
 			array(
-				'jobs' => $this->getJobTable()->fetchAll()
+				'jobs' => $this->getJobTable()->fetchAll(),
+				'cities' => $this->getJobTable()->getCities()
 			)
 		);
+		*/
 
-		return $view;
+		//var_dump($paginator);
+
+		return new ViewModel(array(
+			//'jobs' => $this->getJobTable()->fetchAll(),
+			'cities' => $this->getJobTable()->getCities(),
+			'paginator' => $paginator
+		));
 	}
 
 	public function searchAction() {
@@ -33,16 +53,29 @@ class JobController extends AbstractActionController {
 
 		$text = (String) $this->params()->fromPost('text', '');
 		$orderBy = (String) $this->params()->fromPost('order_by', '');
+		$selectedCityId = (String) $this->params()->fromPost("city", "");
 
 		$params = array(
 			'text' => $text,
-			'orderBy' => $orderBy
+			'orderBy' => $orderBy,
+			'city' => $selectedCityId
 		);
+
+
+		// grab the paginator from the AlbumTable
+		$paginator = $this->getJobTable()->searchJob($params, true);
+		// set the current page to what has been passed in query string, or to 1 if none set
+		$paginator->setCurrentPageNumber((int)$this->params()->fromQuery('page', 1));
+		// set the number of items per page to 10
+		$paginator->setItemCountPerPage(10);
+
 
 		$view = new ViewModel(
 			array(
-				'jobs' => $this->getJobTable()->searchJob($params),
-				'text' => $text
+				'paginator' => $paginator,
+				'text' => $text,
+				'cities' => $this->getJobTable()->getCities(),
+				'city' => $selectedCityId
 			)
 		);
 

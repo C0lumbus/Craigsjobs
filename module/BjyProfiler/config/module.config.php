@@ -1,7 +1,7 @@
 <?php
 $dbParams = array(
     'database'  => 'jobs',
-    'username'  => 'mac_user',
+    'username'  => 'root',
     'password'  => '',
     'hostname'  => 'localhost'
 );
@@ -12,7 +12,7 @@ return array(
             'Zend\Db\Adapter\Adapter' => function ($sm) use ($dbParams) {
                 $adapter = new BjyProfiler\Db\Adapter\ProfilingAdapter(array(
                     'driver'    => 'pdo',
-                    'dsn'       => 'pgsql:dbname='.$dbParams['database'].';host='.$dbParams['hostname'],
+                    'dsn'       => 'mysql:dbname='.$dbParams['database'].';host='.$dbParams['hostname'],
                     'database'  => $dbParams['database'],
                     'username'  => $dbParams['username'],
                     'password'  => $dbParams['password'],

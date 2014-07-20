@@ -1,6 +1,13 @@
 <?php
+use Zend\Form\Element\Select;
+use Zend\Form\Form;
+
 if(!isset($text)) {
 	$text = "";
+}
+
+if(!isset($city)) {
+	$city = "";
 }
 ?>
 <nav class="navbar navbar-default" role="navigation">
@@ -18,21 +25,39 @@ if(!isset($text)) {
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	<form class="navbar-form navbar-left" role="search" action="<?php echo $this->url('job', array('action'=>'search'));?>" method="post">
       <ul class="nav navbar-nav">
+		  <li class="nav">
+			  <?php
+
+			  $form = new Form("filter");
+
+			  $form->prepare();
+			  array_unshift($cities, "All");
+
+			  $element = new Select("city");
+			  $element->setValueOptions($cities)->setName("city")->setLabel("city");
+			  $element->setValue($city);
+
+			  $form->add($element);
+
+			  echo $this->formSelect($element);
+			  ?>
+		  </li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Order by <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu" id="select_order_by">
-            <li><a href="#" id="order_by_title">Title</a></li>
-            <li><a href="#" id="order_by_id">id</a></li>
             <li><a href="#" id="order_by_city">City</a></li>
-            <li class="divider"></li>
-            <li><a href="#" id="order_by_original_date">Original date</a></li>
-            <li class="divider"></li>
-            <li><a href="#" id="order_by_grab_date">Grab date</a></li>
-          </ul>
+            <li><a href="#" id="order_by_state">State</a></li>
+			  <li class="divider"></li>
+		  </ul>
         </li>
+		  <li class="nav">
+			  <a href="#" id="sort_by"><span class="glyphicon glyphicon-sort-by-attributes"></span></a>
+		  </li>
+
       </ul>
-      <form class="navbar-form navbar-left" role="search" action="<?php echo $this->url('job', array('action'=>'search'));?>" method="post">
+
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Search" name="text" value="<?php echo $text; ?>">
         </div>
@@ -42,9 +67,9 @@ if(!isset($text)) {
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
-<?php foreach ($jobs as $job) : ?>
+<?php foreach ($paginator as $job) : ?>
 <ul class="list-group">
-	<li class="list-group-item"><a href="<?php echo $this->url('job', array('action'=>'view', 'id' => $job->id));?>"> <?php echo $this->escapeHtml($job->title);?></a></li>
+	<li class="list-group-item"><a href="<?php echo $this->url('job', array('action'=>'view', 'id' => $job->id));?>"><?php echo $this->escapeHtml($job->title);?></a></li>
 	<li class="list-group-item"><?php echo $this->escapeHtml($job->city);?></li>
 	<li class="list-group-item">
         <a href="<?php echo $this->escapeHtml($job->url); ?>">Open source of vacancy</a>
@@ -52,30 +77,34 @@ if(!isset($text)) {
 	<li class="list-group-item"><span class="glyphicon glyphicon-time"></span> Grab date: <?php echo $this->escapeHtml($job->created);?></li>
 	<li class="list-group-item"><span class="glyphicon glyphicon-time"></span> Original post date: <?php echo $this->escapeHtml($job->created_original);?></li>
 </ul>
-<?php endforeach; ?>
+
+<?php
+
+endforeach;
+
+
+echo $this->paginationControl(
+	// the paginator object
+	$this->paginator,
+	'sliding',
+	// the partial to use to render the control
+	array('partial/paginator.phtml', ''),
+	// the route to link to when a user clicks a control link
+	array(
+		'route' => 'job'
+	)
+);
+?>
 <script type="text/javascript">
 	$(document).ready(function() {
-
 		/**
 		 * simple event listeners for order by filter
 		 */
-
-		$('#order_by_title').click(function() {
-			$('#order_by').val('title');
+		$('#order_by_city').click(function() {
+			$('#order_by').val('city');
 		});
-		$('#order_by_id').click(function() {
-			$('#order_by').val('id');
+		$('#order_by_state').click(function() {
+			$('#order_by').val('state');
 		});
-		$('#order_by_created_original').click(function() {
-			$('#order_by').val('created_original');
-		});
-		$('#order_by_original_date').click(function() {
-			$('#order_by').val('title');
-		});
-		$('#order_by_grab_date').click(function() {
-			$('#order_by').val('created');
-		});
-
-
 	});
 </script>

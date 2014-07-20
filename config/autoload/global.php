@@ -12,6 +12,7 @@
  */
 
 return array(
+	/*
 	'db' => array(
 		'driver'    => 'Pdo',
 		'dsn'       => 'mysql:dbname=jobs;',
@@ -23,4 +24,5 @@ return array(
                     => 'Zend\Db\Adapter\AdapterServiceFactory',
         ),
     ),
+	*/
 );
