@@ -51,7 +51,14 @@ class JobTable {
 						"title",
 						"url",
 						"created",
-						"created_original"));
+						"created_original",
+						"applied",
+						"denied",
+						"no_experience",
+						"hidden",
+						"no_h1b",
+						"unqualified",
+                ));
 		extract($params);
 		$where = "";
 
@@ -118,25 +125,6 @@ class JobTable {
 		}
 
 		return $row;
-	}
-
-	public function getCities() {
-		$select = new Select("jobs");
-
-		$select->columns(array("job_city" => "city"));
-		$select->group("city");
-		$select->order("city ASC");
-
-		$results = $this->tableGateway->selectWith($select);
-
-		$arrayObj = $this->toArray($results);
-
-		$cities = array();
-		foreach($arrayObj as $obj) {
-			$cities[] = $obj->city;
-		}
-
-		return $cities;
 	}
 
 	public function toArray(ResultSet $resultSet) {

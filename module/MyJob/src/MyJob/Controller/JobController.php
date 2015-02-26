@@ -1,14 +1,19 @@
 <?php
 namespace MyJob\Controller;
 
+use MyJob\Model\CityTable;
+use Zend\Http\PhpEnvironment\Request;
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\Session\Container;
 use Zend\View\Model\ViewModel;
 
 class JobController extends AbstractActionController {
 
 	protected $jobTable;
+	protected $cityTable;
+    protected $adapter;
 
-	/**
+    /**
 	 * @return \MyJob\Model\JobTable
 	 */
 	public function getJobTable() {
@@ -20,11 +25,52 @@ class JobController extends AbstractActionController {
 		return $this->jobTable;
 	}
 
+	/**
+	 * @return \MyJob\Model\CityTable
+	 */
+	public function getCityTable() {
+        if (!$this->adapter) {
+            $sm = $this->getServiceLocator();
+            $this->adapter = $sm->get('Zend\Db\Adapter\Adapter');
+        }
+        return new CityTable($this->adapter);
+	}
+
 	public function indexAction() {
 		$this->getServiceLocator()->get('ViewHelperManager')->get('HeadTitle')->set('Jobs list');
 
+        $session = new Container('search');
+
+        $savedSearch = false;
+
+        if($session->text != "" || $session->orderBy != "" || $session->selectedCityId != "") {
+            $text = $session->text;
+            $orderBy = $session->orderBy;
+            $selectedCityId = $session->selectedCityId;
+
+            $params = array(
+                'text' => $text,
+                'orderBy' => $orderBy,
+                'city' => $selectedCityId
+            );
+
+            $savedSearch = true;
+        }
+        else {
+            $text = "";
+            $selectedCityId = null;
+        }
+
 		// grab the paginator from the AlbumTable
-		$paginator = $this->getJobTable()->fetchAll(true);
+
+        if($savedSearch) {
+            $paginator = $this->getJobTable()->searchJob($params, true);
+        }
+        else {
+            $paginator = $this->getJobTable()->fetchAll(true);
+        }
+
+
 		// set the current page to what has been passed in query string, or to 1 if none set
 		$paginator->setCurrentPageNumber((int)$this->params()->fromQuery('page', 1));
 		// set the number of items per page to 10
@@ -42,18 +88,34 @@ class JobController extends AbstractActionController {
 		//var_dump($paginator);
 
 		return new ViewModel(array(
-			//'jobs' => $this->getJobTable()->fetchAll(),
-			'cities' => $this->getJobTable()->getCities(),
-			'paginator' => $paginator
+            'paginator' => $paginator,
+            'text' => $text,
+            'cities' => $this->getCityTable()->getCities(),
+            'city' => $selectedCityId
 		));
 	}
 
 	public function searchAction() {
 		$this->getServiceLocator()->get('ViewHelperManager')->get('HeadTitle')->set('Search results');
 
-		$text = (String) $this->params()->fromPost('text', '');
-		$orderBy = (String) $this->params()->fromPost('order_by', '');
-		$selectedCityId = (String) $this->params()->fromPost("city", "");
+        $session = new Container('search');
+
+        $request = new Request();
+
+        if($request->isPost()) {
+            $text = (String) $this->params()->fromPost('text', '');
+            $orderBy = (String) $this->params()->fromPost('order_by', '');
+            $selectedCityId = (String) $this->params()->fromPost("city", "");
+
+            $session->text = $text;
+            $session->orderBy = $orderBy;
+            $session->selectedCityId = $selectedCityId;
+        }
+        else {
+            $text = $session->text;
+            $orderBy = $session->orderBy;
+            $selectedCityId = $session->selectedCityId;
+        }
 
 		$params = array(
 			'text' => $text,
@@ -74,7 +136,7 @@ class JobController extends AbstractActionController {
 			array(
 				'paginator' => $paginator,
 				'text' => $text,
-				'cities' => $this->getJobTable()->getCities(),
+				'cities' => $this->getCityTable()->getCities(),
 				'city' => $selectedCityId
 			)
 		);
@@ -86,7 +148,7 @@ class JobController extends AbstractActionController {
 		return $view;
 	}
 
-	public function  viewAction() {
+	public function viewAction() {
 		$id = (int) $this->params()->fromRoute('id', 0);
 		if (!$id) {
 			$this->flashMessenger()->addErrorMessage('Job with id ' . $id .  ' doesn\'t set');
@@ -101,5 +163,9 @@ class JobController extends AbstractActionController {
 		);
 
 		return $view;
+	}
+
+	public function pdfAction() {
+
 	}
 }

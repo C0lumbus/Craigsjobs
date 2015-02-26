@@ -29,19 +29,51 @@ if(!isset($city)) {
       <ul class="nav navbar-nav">
 		  <li class="nav">
 			  <?php
-
 			  $form = new Form("filter");
 
 			  $form->prepare();
-			  array_unshift($cities, "All");
+			  //array_unshift($cities, "All");
 
+              array(
+                  array('label' => 'Jazz', 'options' =>
+                      array(
+                          'Acid',
+                          'Cool',
+                          'Smooth'
+                      )
+                  ),
+                  array('label' => 'Rock',
+                      'options' =>
+                      array(
+                          'Alternative Rock',
+                          'Folk Rock',
+                          'Garage Rock',
+                          'Hard Rock',
+                          'Heavy Metal'
+                      )
+                  )
+              );
+
+
+              /*echo "<pre>";
+              var_dump($cities);
+              echo "</pre>";*/
+
+              $options["All"] = array('label' => "All");
+              foreach($cities as $state => $cityArr) {
+                  $options[$state] = array('label' => $state, 'options' => $cityArr);
+
+
+                  //echo "$state $city \n";
+              }
 			  $element = new Select("city");
-			  $element->setValueOptions($cities)->setName("city")->setLabel("city");
-			  $element->setValue($city);
 
-			  $form->add($element);
+			  $element->setValueOptions($options)->setName("city")->setLabel("city");
+			  $element->setValue($city);
+              $form->add($element);
 
 			  echo $this->formSelect($element);
+
 			  ?>
 		  </li>
         <li class="dropdown">
@@ -76,6 +108,36 @@ if(!isset($city)) {
     </li>
 	<li class="list-group-item"><span class="glyphicon glyphicon-time"></span> Grab date: <?php echo $this->escapeHtml($job->created);?></li>
 	<li class="list-group-item"><span class="glyphicon glyphicon-time"></span> Original post date: <?php echo $this->escapeHtml($job->created_original);?></li>
+
+    <?php if($job->applied == "1" || $job->denied == "1" || $job->no_experience == "1" || $job->no_h1b == "1" || $job->unqualified == "1") { ?>
+	<li class="list-group-item"><span class="glyphicon glyphicon-tags"></span>
+        <?php if($job->applied == "1") { ?>
+            <span class="label label-success">Applied</span>
+        <?php }
+
+        if($job->denied == "1") { ?>
+            <span class="label label-danger">Denied</span>
+        <?php }
+
+        if($job->no_experience == "1") { ?>
+            <span class="label label-primary">No experience</span>
+        <?php }
+
+        if($job->hidden == "1") { ?>
+            <span class="label label-success">Hidden</span>
+        <?php }
+
+        if($job->no_h1b == "1") { ?>
+            <span class="label label-danger">No H1B</span>
+        <?php }
+
+        if($job->unqualified == "1") { ?>
+            <span class="label label-primary">Unqualified</span>
+        <?php }
+        ?>
+    </li>
+    <?php } ?>
+
 </ul>
 
 <?php

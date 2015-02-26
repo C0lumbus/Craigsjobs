@@ -19,6 +19,12 @@ class Job {
 		$this->created  = (isset($data['created'])) ? $data['created'] : null;
 		$this->text  = (isset($data['text'])) ? $data['text'] : null;
 		$this->city  = (isset($data['job_city'])) ? $data['job_city'] : null;
+		$this->applied  = (isset($data['applied'])) ? $data['applied'] : null;
+		$this->denied  = (isset($data['denied'])) ? $data['denied'] : null;
+		$this->no_experience  = (isset($data['no_experience'])) ? $data['no_experience'] : null;
+		$this->hidden  = (isset($data['hidden'])) ? $data['hidden'] : null;
+		$this->no_h1b  = (isset($data['no_h1b'])) ? $data['no_h1b'] : null;
+		$this->unqualified  = (isset($data['unqualified'])) ? $data['unqualified'] : null;
 	}
 }
  
