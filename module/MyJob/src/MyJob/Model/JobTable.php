@@ -1,7 +1,10 @@
 <?php
 namespace MyJob\Model;
 
+use Zend\Db\Sql\Expression;
+use Zend\Db\Sql\Insert;
 use Zend\Db\Sql\Select;
+use Zend\Db\Sql\Update;
 use Zend\Db\TableGateway\TableGateway;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Paginator\Adapter\DbSelect;
@@ -52,7 +55,7 @@ class JobTable {
 						"url",
 						"created",
 						"created_original",
-						"applied",
+						"application_id",
 						"denied",
 						"no_experience",
 						"hidden",
@@ -108,12 +111,14 @@ class JobTable {
 
 		$select = new Select('jobs');
 		$select->columns(
-				array("job_city" => "city",
-						"text",
-						"title",
-						"url",
-						"created",
-						"created_original"));
+            array(
+                "vacancy_id" => "id",
+                "job_city" => "city",
+                "text",
+                "title",
+                "url",
+                "created",
+                "created_original"));
 
 		$select->where("id=$id");
 
@@ -135,4 +140,14 @@ class JobTable {
 
 		return $array;
 	}
+
+    public function markJob($jobId, $mark, $value) {
+        $update = new Update("jobs");
+
+        $update->set(array($mark => $value));
+
+        $update->where("id = $jobId");
+
+        $this->tableGateway->updateWith($update);
+    }
 }

@@ -1,6 +1,7 @@
 <?php
 namespace MyJob\Controller;
 
+use MyJob\Model\ApplicationTable;
 use MyJob\Model\CityTable;
 use Zend\Http\PhpEnvironment\Request;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -34,6 +35,17 @@ class JobController extends AbstractActionController {
             $this->adapter = $sm->get('Zend\Db\Adapter\Adapter');
         }
         return new CityTable($this->adapter);
+	}
+
+    /**
+	 * @return \MyJob\Model\ApplicationTable
+	 */
+	public function getApplicationTable() {
+        if (!$this->adapter) {
+            $sm = $this->getServiceLocator();
+            $this->adapter = $sm->get('Zend\Db\Adapter\Adapter');
+        }
+        return new ApplicationTable($this->adapter);
 	}
 
 	public function indexAction() {
@@ -147,6 +159,55 @@ class JobController extends AbstractActionController {
 
 		return $view;
 	}
+
+    public function markAction() {
+        $jobId = $this->params()->fromRoute("id", 0);
+        $as = $this->params()->fromQuery("as");
+
+        $value = "1";
+        switch($as) {
+            case "applied":
+                $as = "application_id";
+
+                $value = $this->getApplicationTable()->saveApplication();
+
+                break;
+
+            case "denied":
+                $as = "denied";
+
+                break;
+
+
+            case "no_experience":
+                $as = "no_experience";
+
+                break;
+
+
+            case "hidden":
+                $as = "hidden";
+
+                break;
+
+
+            case "no_h1b":
+                $as = "no_h1b";
+
+                break;
+
+
+            case "unqualified":
+                $as = "unqualified";
+
+                break;
+
+        }
+
+        $this->getJobTable()->markJob($jobId, $as, $value);
+
+        return $this->redirect()->toRoute('job', array("action" => "view", "id" => $jobId));
+    }
 
 	public function viewAction() {
 		$id = (int) $this->params()->fromRoute('id', 0);

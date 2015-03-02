@@ -9,3 +9,13 @@
 	<li class="list-group-item"><span class="glyphicon glyphicon-time"></span> Grab date: <?php echo $this->escapeHtml($job->created);?></li>
 	<li class="list-group-item"><span class="glyphicon glyphicon-time"></span> Original post date: <?php echo $this->escapeHtml($job->created_original);?></li>
 </ul>
+
+<form class="form-horizontal">
+    <a href="<?php echo $this->url('job', array('id' => $job->id, 'action'=>'mark'),  array('query' => array('as' => 'applied')));?>" class="btn btn-success">Mark as applied</a>
+    <a href="<?php echo $this->url('job', array('id' => $job->id, 'action'=>'mark'),  array('query' => array('as' => 'favorite')));?>" class="btn btn-warning">Favorite</a>
+    <a href="<?php echo $this->url('job', array('id' => $job->id, 'action'=>'mark'),  array('query' => array('as' => 'denied')));?>" class="btn btn-danger">Mark as denied</a>
+    <a href="<?php echo $this->url('job', array('id' => $job->id, 'action'=>'mark'),  array('query' => array('as' => 'no_experience')));?>" class="btn btn-primary">Mark as no experience</a>
+    <a href="<?php echo $this->url('job', array('id' => $job->id, 'action'=>'mark'),  array('query' => array('as' => 'no_h1b')));?>" class="btn btn-danger">Mark as no H1B</a>
+    <a href="<?php echo $this->url('job', array('id' => $job->id, 'action'=>'mark'),  array('query' => array('as' => 'unqualified')));?>" class="btn btn-danger">Mark as unqualified</a>
+    <a href="<?php echo $this->url('job', array('id' => $job->id, 'action'=>'mark'),  array('query' => array('as' => 'hidden')));?>" class="btn btn-default">Mark as hidden</a>
+</form>

@@ -109,9 +109,9 @@ if(!isset($city)) {
 	<li class="list-group-item"><span class="glyphicon glyphicon-time"></span> Grab date: <?php echo $this->escapeHtml($job->created);?></li>
 	<li class="list-group-item"><span class="glyphicon glyphicon-time"></span> Original post date: <?php echo $this->escapeHtml($job->created_original);?></li>
 
-    <?php if($job->applied == "1" || $job->denied == "1" || $job->no_experience == "1" || $job->no_h1b == "1" || $job->unqualified == "1") { ?>
+    <?php if($job->application_id != "" || $job->denied == "1" || $job->no_experience == "1" || $job->no_h1b == "1" || $job->unqualified == "1") { ?>
 	<li class="list-group-item"><span class="glyphicon glyphicon-tags"></span>
-        <?php if($job->applied == "1") { ?>
+        <?php if($job->application_id != "") { ?>
             <span class="label label-success">Applied</span>
         <?php }
 
@@ -137,9 +137,7 @@ if(!isset($city)) {
         ?>
     </li>
     <?php } ?>
-
 </ul>
-
 <?php
 
 endforeach;
