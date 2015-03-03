@@ -73,7 +73,7 @@ class JobController extends AbstractActionController {
             $selectedCityId = null;
         }
 
-		// grab the paginator from the AlbumTable
+		// grab the paginator from the JobTable
 
         if($savedSearch) {
             $paginator = $this->getJobTable()->searchJob($params, true);
@@ -82,28 +82,17 @@ class JobController extends AbstractActionController {
             $paginator = $this->getJobTable()->fetchAll(true);
         }
 
-
 		// set the current page to what has been passed in query string, or to 1 if none set
 		$paginator->setCurrentPageNumber((int)$this->params()->fromQuery('page', 1));
 		// set the number of items per page to 10
 		$paginator->setItemCountPerPage(10);
 
-		/*
-		$view = new ViewModel(
-			array(
-				'jobs' => $this->getJobTable()->fetchAll(),
-				'cities' => $this->getJobTable()->getCities()
-			)
-		);
-		*/
-
-		//var_dump($paginator);
-
 		return new ViewModel(array(
             'paginator' => $paginator,
             'text' => $text,
             'cities' => $this->getCityTable()->getCities(),
-            'city' => $selectedCityId
+            'city' => $selectedCityId,
+            'totalJobs' => $paginator->getTotalItemCount()
 		));
 	}
 
@@ -135,25 +124,22 @@ class JobController extends AbstractActionController {
 			'city' => $selectedCityId
 		);
 
-
-		// grab the paginator from the AlbumTable
+        // grab the paginator from the JobTable
 		$paginator = $this->getJobTable()->searchJob($params, true);
 		// set the current page to what has been passed in query string, or to 1 if none set
 		$paginator->setCurrentPageNumber((int)$this->params()->fromQuery('page', 1));
 		// set the number of items per page to 10
 		$paginator->setItemCountPerPage(10);
 
-
 		$view = new ViewModel(
 			array(
 				'paginator' => $paginator,
 				'text' => $text,
 				'cities' => $this->getCityTable()->getCities(),
-				'city' => $selectedCityId
+				'city' => $selectedCityId,
+                'totalJobs' => $paginator->getTotalItemCount()
 			)
 		);
-
-
 
 		$view->setTemplate('my-job/job/index');
 
@@ -178,24 +164,20 @@ class JobController extends AbstractActionController {
 
                 break;
 
-
             case "no_experience":
                 $as = "no_experience";
 
                 break;
-
 
             case "hidden":
                 $as = "hidden";
 
                 break;
 
-
             case "no_h1b":
                 $as = "no_h1b";
 
                 break;
-
 
             case "unqualified":
                 $as = "unqualified";
@@ -206,7 +188,6 @@ class JobController extends AbstractActionController {
                 $as = "archived";
 
                 break;
-
         }
 
         $this->getJobTable()->markJob($jobId, $as, $value);

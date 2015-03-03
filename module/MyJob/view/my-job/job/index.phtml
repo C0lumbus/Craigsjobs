@@ -148,7 +148,12 @@ if(!isset($city)) {
 
 endforeach;
 
-
+?>
+<ul class="list-group">
+    <li class="list-group-item">Jobs found: <label class="label label-success"><?php echo $totalJobs; ?></label>
+    </li>
+</ul>
+<?php
 echo $this->paginationControl(
 	// the paginator object
 	$this->paginator,
