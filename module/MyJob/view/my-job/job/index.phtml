@@ -99,46 +99,52 @@ if(!isset($city)) {
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
-<?php foreach ($paginator as $job) : ?>
-<ul class="list-group">
-	<li class="list-group-item"><a href="<?php echo $this->url('job', array('action'=>'view', 'id' => $job->id));?>"><?php echo $this->escapeHtml($job->title);?></a></li>
-	<li class="list-group-item"><?php echo $this->escapeHtml($job->city);?></li>
-	<li class="list-group-item">
-        <a href="<?php echo $this->escapeHtml($job->url); ?>">Open source of vacancy</a>
-    </li>
-	<li class="list-group-item"><span class="glyphicon glyphicon-time"></span> Grab date: <?php echo $this->escapeHtml($job->created);?></li>
-	<li class="list-group-item"><span class="glyphicon glyphicon-time"></span> Original post date: <?php echo $this->escapeHtml($job->created_original);?></li>
+<?php foreach ($paginator as $job) :
+    if($job->hidden != "1") { ?>
+        <ul class="list-group">
+            <li class="list-group-item"><a
+                    href="<?php echo $this->url('job', array('action' => 'view', 'id' => $job->id)); ?>"><?php echo $this->escapeHtml($job->title); ?></a>
+            </li>
+            <li class="list-group-item"><?php echo $this->escapeHtml($job->city); ?></li>
+            <li class="list-group-item">
+                <a href="<?php echo $this->escapeHtml($job->url); ?>">Open source of vacancy</a>
+            </li>
+            <li class="list-group-item"><span class="glyphicon glyphicon-time"></span> Grab
+                date: <?php echo $this->escapeHtml($job->created); ?></li>
+            <li class="list-group-item"><span class="glyphicon glyphicon-time"></span> Original post
+                date: <?php echo $this->escapeHtml($job->created_original); ?></li>
 
-    <?php if($job->application_id != "" || $job->denied == "1" || $job->no_experience == "1" || $job->no_h1b == "1" || $job->unqualified == "1") { ?>
-	<li class="list-group-item"><span class="glyphicon glyphicon-tags"></span>
-        <?php if($job->application_id != "") { ?>
-            <span class="label label-success">Applied</span>
-        <?php }
+            <?php if ($job->application_id != "" || $job->denied == "1" || $job->no_experience == "1" || $job->no_h1b == "1" || $job->unqualified == "1") { ?>
+                <li class="list-group-item"><span class="glyphicon glyphicon-tags"></span>
+                    <?php if ($job->application_id != "") { ?>
+                        <span class="label label-success">Applied</span>
+                    <?php }
 
-        if($job->denied == "1") { ?>
-            <span class="label label-danger">Denied</span>
-        <?php }
+                    if ($job->denied == "1") { ?>
+                        <span class="label label-danger">Denied</span>
+                    <?php }
 
-        if($job->no_experience == "1") { ?>
-            <span class="label label-primary">No experience</span>
-        <?php }
+                    if ($job->no_experience == "1") { ?>
+                        <span class="label label-primary">No experience</span>
+                    <?php }
 
-        if($job->hidden == "1") { ?>
-            <span class="label label-success">Hidden</span>
-        <?php }
+                    if ($job->hidden == "1") { ?>
+                        <span class="label label-success">Hidden</span>
+                    <?php }
 
-        if($job->no_h1b == "1") { ?>
-            <span class="label label-danger">No H1B</span>
-        <?php }
+                    if ($job->no_h1b == "1") { ?>
+                        <span class="label label-danger">No H1B</span>
+                    <?php }
 
-        if($job->unqualified == "1") { ?>
-            <span class="label label-primary">Unqualified</span>
-        <?php }
-        ?>
-    </li>
-    <?php } ?>
-</ul>
-<?php
+                    if ($job->unqualified == "1") { ?>
+                        <span class="label label-primary">Unqualified</span>
+                    <?php }
+                    ?>
+                </li>
+            <?php } ?>
+        </ul>
+    <?php
+    }
 
 endforeach;
 

@@ -202,6 +202,11 @@ class JobController extends AbstractActionController {
 
                 break;
 
+            case "archived":
+                $as = "archived";
+
+                break;
+
         }
 
         $this->getJobTable()->markJob($jobId, $as, $value);
