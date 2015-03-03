@@ -56,9 +56,11 @@ class JobTable {
 						"created",
 						"created_original",
 						"application_id",
+						"favorite",
 						"denied",
 						"no_experience",
 						"hidden",
+						"archived",
 						"no_h1b",
 						"unqualified",
                 ));
@@ -118,7 +120,15 @@ class JobTable {
                 "title",
                 "url",
                 "created",
-                "created_original"));
+                "created_original",
+                "application_id",
+                "favorite",
+                "denied",
+                "no_experience",
+                "hidden",
+                "archived",
+                "no_h1b",
+                "unqualified",));
 
 		$select->where("id=$id");
 

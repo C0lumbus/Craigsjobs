@@ -114,10 +114,14 @@ if(!isset($city)) {
             <li class="list-group-item"><span class="glyphicon glyphicon-time"></span> Original post
                 date: <?php echo $this->escapeHtml($job->created_original); ?></li>
 
-            <?php if ($job->application_id != "" || $job->denied == "1" || $job->no_experience == "1" || $job->no_h1b == "1" || $job->unqualified == "1") { ?>
+            <?php if ($job->application_id != "" || $job->favorite == "1" || $job->denied == "1" || $job->no_experience == "1" || $job->no_h1b == "1" || $job->unqualified == "1") { ?>
                 <li class="list-group-item"><span class="glyphicon glyphicon-tags"></span>
                     <?php if ($job->application_id != "") { ?>
                         <span class="label label-success">Applied</span>
+                    <?php }
+
+                    if ($job->favorite == "1") { ?>
+                        <span class="label label-warning">Favorite</span>
                     <?php }
 
                     if ($job->denied == "1") { ?>
@@ -138,6 +142,10 @@ if(!isset($city)) {
 
                     if ($job->unqualified == "1") { ?>
                         <span class="label label-primary">Unqualified</span>
+                    <?php }
+
+                    if ($job->archived == "1") { ?>
+                        <span class="label label-default">Archived</span>
                     <?php }
                     ?>
                 </li>

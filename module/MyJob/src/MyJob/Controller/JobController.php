@@ -164,6 +164,11 @@ class JobController extends AbstractActionController {
 
                 break;
 
+            case "favorite":
+                $as = "favorite";
+
+                break;
+
             case "no_experience":
                 $as = "no_experience";
 

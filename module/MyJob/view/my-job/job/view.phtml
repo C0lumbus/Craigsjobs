@@ -8,6 +8,42 @@
     </li>
 	<li class="list-group-item"><span class="glyphicon glyphicon-time"></span> Grab date: <?php echo $this->escapeHtml($job->created);?></li>
 	<li class="list-group-item"><span class="glyphicon glyphicon-time"></span> Original post date: <?php echo $this->escapeHtml($job->created_original);?></li>
+<?php if ($job->application_id != "" || $job->favorite == "1" || $job->denied == "1" || $job->no_experience == "1" || $job->no_h1b == "1" || $job->unqualified == "1" || $job->hidden == "1" || $job->archived == "1") { ?>
+    <li class="list-group-item"><span class="glyphicon glyphicon-tags"></span>
+        <?php if ($job->application_id != "") { ?>
+            <span class="label label-success">Applied</span>
+        <?php }
+
+        if ($job->favorite == "1") { ?>
+            <span class="label label-warning">Favorite</span>
+        <?php }
+
+        if ($job->denied == "1") { ?>
+            <span class="label label-danger">Denied</span>
+        <?php }
+
+        if ($job->no_experience == "1") { ?>
+            <span class="label label-primary">No experience</span>
+        <?php }
+
+        if ($job->no_h1b == "1") { ?>
+            <span class="label label-danger">No H1B</span>
+        <?php }
+
+        if ($job->unqualified == "1") { ?>
+            <span class="label label-primary">Unqualified</span>
+        <?php }
+
+        if ($job->hidden == "1") { ?>
+            <span class="label label-default">Hidden</span>
+        <?php }
+
+        if ($job->archived == "1") { ?>
+            <span class="label label-default">Archived</span>
+        <?php }
+        ?>
+    </li>
+<?php } ?>
 </ul>
 
 <form class="form-horizontal">
@@ -18,4 +54,5 @@
     <a href="<?php echo $this->url('job', array('id' => $job->id, 'action'=>'mark'),  array('query' => array('as' => 'no_h1b')));?>" class="btn btn-danger">Mark as no H1B</a>
     <a href="<?php echo $this->url('job', array('id' => $job->id, 'action'=>'mark'),  array('query' => array('as' => 'unqualified')));?>" class="btn btn-danger">Mark as unqualified</a>
     <a href="<?php echo $this->url('job', array('id' => $job->id, 'action'=>'mark'),  array('query' => array('as' => 'hidden')));?>" class="btn btn-default">Mark as hidden</a>
+    <a href="<?php echo $this->url('job', array('id' => $job->id, 'action'=>'mark'),  array('query' => array('as' => 'archived')));?>" class="btn btn-default">Mark as archived</a>
 </form>
