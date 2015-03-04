@@ -88,6 +88,13 @@ class JobTable {
 
 		$order["created_original"] = "DESC";
 
+        if($where != "") {
+            $where .= " AND (jobs.hidden IS NULL OR jobs.hidden <> 1)";
+        }
+        else {
+            $where = "jobs.hidden IS NULL OR jobs.hidden <> 1";
+        }
+
 		if($where != "") {
 			$select->where($where);
 		}
