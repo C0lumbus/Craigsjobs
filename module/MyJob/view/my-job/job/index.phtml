@@ -32,39 +32,10 @@ if(!isset($city)) {
 			  $form = new Form("filter");
 
 			  $form->prepare();
-			  //array_unshift($cities, "All");
-
-              array(
-                  array('label' => 'Jazz', 'options' =>
-                      array(
-                          'Acid',
-                          'Cool',
-                          'Smooth'
-                      )
-                  ),
-                  array('label' => 'Rock',
-                      'options' =>
-                      array(
-                          'Alternative Rock',
-                          'Folk Rock',
-                          'Garage Rock',
-                          'Hard Rock',
-                          'Heavy Metal'
-                      )
-                  )
-              );
-
-
-              /*echo "<pre>";
-              var_dump($cities);
-              echo "</pre>";*/
 
               $options["All"] = array('label' => "All");
               foreach($cities as $state => $cityArr) {
                   $options[$state] = array('label' => $state, 'options' => $cityArr);
-
-
-                  //echo "$state $city \n";
               }
 			  $element = new Select("city");
 

@@ -217,6 +217,17 @@ class JobController extends AbstractActionController {
 		return $view;
 	}
 
+    public function addAction() {
+        $this->getServiceLocator()->get('ViewHelperManager')->get('HeadTitle')->set('Add job');
+        $view = new ViewModel(
+            array(
+                'cities' => $this->getCityTable()->getCities()
+            )
+        );
+
+        return $view;
+    }
+
 	public function pdfAction() {
 
 	}
