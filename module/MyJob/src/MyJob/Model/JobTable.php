@@ -149,6 +149,45 @@ class JobTable {
 		return $row;
 	}
 
+    /**
+     * @param Job $job
+     * @return int
+     * @throws \Exception
+     */
+    public function saveJob(Job $job)
+    {
+        $data = array(
+            'title' => $job->title,
+            'city' => $job->city,
+            'text' => $job->text,
+            'source' => $job->source,
+            'url' => $job->url,
+            'created' => $job->created,
+            'created_original' => $job->created_original,
+            'application_id' => $job->application_id,
+            'favorite' => $job->favorite,
+            'denied' => $job->denied,
+            'no_experience' => $job->no_experience,
+            'no_h1b' => $job->no_h1b,
+            'unqualified' => $job->unqualified,
+            'hidden' => $job->hidden,
+            'archived' => $job->archived,
+        );
+
+        $id = (int) $job->id;
+        if ($id == 0) {
+            $this->tableGateway->insert($data);
+
+            return $this->tableGateway->lastInsertValue;
+        } else {
+            if ($this->getJob($id)) {
+                $this->tableGateway->update($data, array('id' => $id));
+            } else {
+                throw new \Exception('Job id does not exist');
+            }
+        }
+    }
+
 	public function toArray(ResultSet $resultSet) {
 		$array = array();
 		foreach($resultSet as $key => $value) {

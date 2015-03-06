@@ -13,7 +13,7 @@ foreach($cities as $state => $cityArr) {
 $element = new Select("city");
 $element->setValueOptions($options)->setName("city")->setLabel("city")->setAttribute("class", "form-control")->setAttribute("id", "state");
 ?>
-<form class="form">
+<form class="form" method="post" action="save">
     <ul class="list-group">
         <li class="list-group-item">
 
@@ -29,7 +29,7 @@ $element->setValueOptions($options)->setName("city")->setLabel("city")->setAttri
 
         <div class="form-group">
             <label for="text">Text</label>
-            <textarea class="form-control" placeholder="Description of job (copy+paste)" id="text" cols="30" rows="10"></textarea>
+            <textarea class="form-control" placeholder="Description of job (copy+paste)" id="text" cols="30" rows="10" name="text"></textarea>
         </div>
 
         <div class="form-group">
@@ -38,8 +38,8 @@ $element->setValueOptions($options)->setName("city")->setLabel("city")->setAttri
         </div>
 
         <div class="form-group">
-            <label for="source">Link</label>
-            <input type="text" class="form-control" placeholder="Link to job page or company website" name="link" id="link" />
+            <label for="url">Url</label>
+            <input type="text" class="form-control" placeholder="Url to job page or company website" name="url" id="url" />
         </div>
 
         <div class="form-group">
@@ -61,28 +61,28 @@ $element->setValueOptions($options)->setName("city")->setLabel("city")->setAttri
         </li>
         <li class="list-group-item" data-toggle="tooltip" data-placement="left" title="Mark job as" id="markAs"><div class="btn-group" data-toggle="buttons">
                 <label class="btn btn-success">
-                    <input type="checkbox" autocomplete="off"> Applied
+                    <input type="checkbox" autocomplete="off" name="applied" value="1"> Applied
                 </label>
                 <label class="btn btn-warning">
-                    <input type="checkbox" autocomplete="off"> Favorite
+                    <input type="checkbox" autocomplete="off" name="favorite" value="1"> Favorite
                 </label>
                 <label class="btn btn-danger">
-                    <input type="checkbox" autocomplete="off"> Denied
+                    <input type="checkbox" autocomplete="off" name="denied" value="1"> Denied
                 </label>
                 <label class="btn btn-primary">
-                    <input type="checkbox" autocomplete="off"> No experience
+                    <input type="checkbox" autocomplete="off" name="no_experience" value="1"> No experience
                 </label>
                 <label class="btn btn-danger">
-                    <input type="checkbox" autocomplete="off"> No H1B
+                    <input type="checkbox" autocomplete="off" name="no_h1b" value="1"> No H1B
                 </label>
                 <label class="btn btn-danger">
-                    <input type="checkbox" autocomplete="off"> Unqualified
+                    <input type="checkbox" autocomplete="off" name="unqualified" value="1"> Unqualified
                 </label>
                 <label class="btn btn-default">
-                    <input type="checkbox" autocomplete="off"> Hidden
+                    <input type="checkbox" autocomplete="off" name="hidden" value="1"> Hidden
                 </label>
                 <label class="btn btn-default">
-                    <input type="checkbox" autocomplete="off"> Archived
+                    <input type="checkbox" autocomplete="off" name="archived" value="1"> Archived
                 </label>
             </div></li>
     </ul>

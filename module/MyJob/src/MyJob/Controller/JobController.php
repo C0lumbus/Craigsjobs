@@ -3,6 +3,7 @@ namespace MyJob\Controller;
 
 use MyJob\Model\ApplicationTable;
 use MyJob\Model\CityTable;
+use MyJob\Model\Job;
 use Zend\Http\PhpEnvironment\Request;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Session\Container;
@@ -226,6 +227,38 @@ class JobController extends AbstractActionController {
         );
 
         return $view;
+    }
+
+    public function saveAction() {
+        $job = new Job();
+
+        $job->id = 0;
+        $job->title = $this->params()->fromPost("title");
+        $job->city = $this->getCityTable()->getCityById($this->params()->fromPost("city"));
+        $job->text = $this->params()->fromPost("text");
+        $job->source = $this->params()->fromPost("source");
+        $job->url = $this->params()->fromPost("url");
+        $job->created = $this->params()->fromPost("created");
+        $job->created_original = $this->params()->fromPost("created_original");
+
+        if($this->params()->fromPost("applied") == "1") {
+            $job->application_id = $this->getApplicationTable()->saveApplication();
+        }
+        else {
+            $job->application_id = "0";
+        }
+
+        $job->favorite = (int)$this->params()->fromPost("favorite");
+        $job->denied = (int)$this->params()->fromPost("denied");
+        $job->no_experience = (int)$this->params()->fromPost("no_experience");
+        $job->no_h1b = (int)$this->params()->fromPost("no_h1b");
+        $job->unqualified = (int)$this->params()->fromPost("unqualified");
+        $job->hidden = (int)$this->params()->fromPost("hidden");
+        $job->archived = (int)$this->params()->fromPost("archived");
+
+        $jobId = $this->getJobTable()->saveJob($job);
+
+        return $this->redirect()->toRoute('job', array("action" => "view", "id" => $jobId));
     }
 
 	public function pdfAction() {

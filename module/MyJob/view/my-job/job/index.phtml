@@ -87,7 +87,7 @@ if(!isset($city)) {
 
             <?php if ($job->application_id != "" || $job->favorite == "1" || $job->denied == "1" || $job->no_experience == "1" || $job->no_h1b == "1" || $job->unqualified == "1") { ?>
                 <li class="list-group-item"><span class="glyphicon glyphicon-tags"></span>
-                    <?php if ($job->application_id != "") { ?>
+                    <?php if ($job->application_id != "" && $job->application_id != "0") { ?>
                         <span class="label label-success">Applied</span>
                     <?php }
 

@@ -9,8 +9,17 @@ class Job {
 	public $created_original;
 	public $created;
 	public $text;
+    public $application_id;
+    public $favorite;
+    public $denied;
+    public $no_experience;
+    public $hidden;
+    public $archived;
+    public $no_h1b;
+    public $unqualified;
+    public $source;
 
-	public function exchangeArray($data) {
+    public function exchangeArray($data) {
 		$this->id     = (isset($data['vacancy_id'])) ? $data['vacancy_id'] : null;
 		$this->city = (isset($data['city'])) ? $data['city'] : null;
 		$this->title  = (isset($data['title'])) ? $data['title'] : null;
@@ -27,6 +36,7 @@ class Job {
 		$this->archived  = (isset($data['archived'])) ? $data['archived'] : null;
 		$this->no_h1b  = (isset($data['no_h1b'])) ? $data['no_h1b'] : null;
 		$this->unqualified  = (isset($data['unqualified'])) ? $data['unqualified'] : null;
+		$this->source  = (isset($data['source'])) ? $data['source'] : null;
 	}
 }
  

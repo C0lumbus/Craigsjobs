@@ -29,10 +29,6 @@ class CityTable {
         $statement = $sql->prepareStatementForSqlObject($select);
         $results = $statement->execute();
 
-
-        //var_dump($this->adapter);
-		//$results = $this->adapter->query($select);
-
 		$arrayObj = $this->toArray($results);
 
 		$cities = array();
@@ -42,6 +38,21 @@ class CityTable {
 
 		return $cities;
 	}
+
+    public function getCityById($id) {
+        $sql = new Sql($this->adapter);
+        $select = new Select("cities");
+
+        $select->columns(array("city" => "city"));
+
+        $select->group("city");
+        $select->where(array('id' => $id));
+
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $city = $statement->execute();
+
+        return $this->toArray($city)[0]['city'];
+    }
 
 	public function toArray($resultSet) {
 		$array = array();
